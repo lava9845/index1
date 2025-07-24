@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Service Cards</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      padding: 40px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #484a85;
+      margin-bottom: 10px;
+    }
+    header p {
+      color: #c1c4c0;
+      font-size: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      padding: 20px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+   .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    .icon-circle {
+      width: 80px;
+      height: 80px;
+      background-color: #484a85;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .icon-img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #484a85;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .card-text {
+      font-size: 0.95rem;
+      color: #495057;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .btn {
+      background-color: #71c344;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+    .btn:hover {
+      background-color: #5cab36;
+    }
+    @media (max-width: 600px) {
+      .card {
+        padding: 15px;
+      }
+      .icon-circle {
+        width: 60px;
+        height: 60px;
+      }
+      .icon-img {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>A few things we're great at</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus illum, sequi obcaecati unde blanditiis facilis rerum dolor natus.</p>
+  </header>
+  <div class="container">
+    <div class="card-grid">
+      <div class="card">
+        <div class="icon-circle">
+          <img src="https://cdn-icons-png.flaticon.com/128/903/903479.png" class="icon-img" alt="Marketing">
+        </div>
+        <div class="card-title">MARKETING PLAN</div>
+        <div class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis rerum consequatur enim obcaecati animi.</div>
+        <a href="#" class="btn">GET STARTED</a>
+      </div>
+
+      <div class="card">
+        <div class="icon-circle">
+          <img src="https://cdn-icons-png.flaticon.com/128/7539/7539872.png" class="icon-img" alt="Financial">
+        </div>
+        <div class="card-title">FINANCIAL ANALYSIS</div>
+        <div class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti tempora exercitationem sit eius nisi.</div>
+        <a href="#" class="btn">GET STARTED</a>
+      </div>
+
+      <div class="card">
+        <div class="icon-circle">
+          <img src="https://cdn-icons-png.flaticon.com/128/10053/10053576.png" class="icon-img" alt="Strategy">
+        </div>
+        <div class="card-title">BUSINESS STRATEGY</div>
+        <div class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus minima corporis omnis incidunt.</div>
+        <a href="#" class="btn">GET STARTED</a>
+      </div>
+
+      <div class="card">
+        <div class="icon-circle">
+          <img src="https://cdn-icons-png.flaticon.com/128/2076/2076218.png" class="icon-img" alt="Consulting">
+        </div>
+        <div class="card-title">CONSULTING</div>
+        <div class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam hic magni sit cupiditate iste.</div>
+        <a href="#" class="btn">GET STARTED</a>
+      </div>
+
+      <div class="card">
+        <div class="icon-circle">
+          <img src="https://cdn-icons-png.flaticon.com/128/709/709861.png" class="icon-img" alt="Cost Efficiency">
+        </div>
+        <div class="card-title">COST EFFICIENCY</div>
+        <div class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione perferendis iusto aliquam sunt quis.</div>
+        <a href="#" class="btn">GET STARTED</a>
+      </div>
+
+      <div class="card">
+        <div class="icon-circle">
+          <img src="https://cdn-icons-png.flaticon.com/128/3593/3593337.png" class="icon-img" alt="Payment">
+        </div>
+        <div class="card-title">PAYMENT OPTIONS</div>
+        <div class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat accusantium consequatur totam cum temporibus.</div>
+        <a href="#" class="btn">GET STARTED</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

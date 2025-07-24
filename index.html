@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.flaticon.com/free-icon/suitcase_903479">
+    <link rel="stylesheet" href="https://www.flaticon.com/free-icon/decrease_3102284">
+    <link rel="stylesheet" href="https://www.flaticon.com/free-icon/balance_10053576">
+    <link rel="stylesheet" href="https://www.flaticon.com/free-icon/bubble-chat_2076218">
+    <link rel="stylesheet" href="https://www.flaticon.com/free-icon/line-chart_709861">
+    <link rel="stylesheet" href="https://www.flaticon.com/free-icon/bitcoin_3593337">
+    <link rel="stylesheet" href="style.css">
+    <style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 40px;
+  background-color: #ffffff;
+  color: #333;
+}
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom:0 auto;
+  color: #484a85; 
+}
+header p {
+  color: #c1c4c0; 
+  font-size: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.card {
+  height: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.card-body h5.card-title {
+  text-align: center;  
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #484a85; 
+}
+.card-text {
+  font-size: 0.95rem;
+  color: #495057;
+}
+.icon-circle {
+  width: 80px;
+  height: 80px;
+  background-color: #484a85;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto; 
+}
+.icon-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+.card .btn-primary {
+  display: block;
+  background-color: #71c344;
+  border-color: #71c344;
+  margin: 20px auto 0;
+  font-weight: 500;
+  width: fit-content;
+  
+}
+.card .btn-primary:hover {
+  background-color: #5cab36; 
+  border-color: #5cab36;
+}
+.row {
+  padding: 0 10px;
+}
+@media (max-width: 767.98px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  header p {
+    font-size: 0.9rem;
+  }
+.card-img-top {
+    height: 10px;
+    width: 10px;
+  }
+}
+</style>
+</head>
+<body>
+    <header>
+    <h1><strong>A few things we're great at</strong></h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+    Delectus illum,sequi obcaecati unde blanditiis facilis rerum dolor natus vero cupiditate quos 
+    exercitationem iusto id voluptatem distinctio hic adipisci ipsum! Sint.</p>
+    </header>
+    <div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="col">
+    <div class="card">
+      <div class="card-body text-center">
+        <div class="icon-circle">
+         <img src="https://cdn-icons-png.flaticon.com/128/903/903479.png" alt="Marketing" class="icon-img">
+         </div>
+         <h5 class="card-title">MARKETING PLAN</h5>
+         <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+            Debitis rerum consequatur enim obcaecati animi odit mollitia quibusdam laboriosam impedit totam, quasi cum non maxime facere iure harum doloribus nostrum molestias.</p>
+            <a href="#" class="btn btn-primary">GET STARTED</a>
+       </div>
+       </div>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <div class="card-body text-center">
+        <div class="icon-circle">
+          <img src="https://cdn-icons-png.flaticon.com/128/7539/7539872.png" alt="FINANCIAL" class="icon-img">      
+         </div>
+          <h5 class="card-title">FINANCIAL ANALYSIS</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+            Corrupti tempora exercitationem sit eius nisi, magnam, maiores voluptatum aut sed aliquam deleniti eum doloremque reiciendis quas sint sequi. Doloremque, totam quas.</p>
+          <a href="#" class="btn btn-primary">GET STARTED</a>
+       </div>
+      </div>
+    </div>
+  </div>
+    <div class="col">
+    <div class="card">
+       <div class="card-body">
+         <div class="icon-circle">
+            <img src="https://cdn-icons-png.flaticon.com/128/10053/10053576.png" alt="BUSINESS STRATEGY" class="icon-img">
+            </div>
+            <h5 class="card-title">BUSINESS STRATEGY</h5>
+            <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
+            Voluptatibus minima corporis omnis incidunt consectetur rem repellat fugiat tempore temporibus quos hic voluptate quo, dolorem minus expedita enim labore veniam explicabo!.</p>
+            <a href="#" class="btn btn-primary">GET STARTED</a>
+         
+        </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+        <div class="icon-circle">
+      <img src="https://cdn-icons-png.flaticon.com/128/2076/2076218.png" class="icon-img" alt="CONSULTING">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">CONSULTING</h5>
+        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+            Ullam hic magni sit cupiditate iste, maiores unde ducimus repudiandae vitae molestiae corrupti rerum provident praesentium sequi velit? Provident voluptates perferendis aliquam!.</p>
+            <a href="#" class="btn btn-primary">GET STARTED</a>
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+        <div class="icon-circle">
+      <img src="https://cdn-icons-png.flaticon.com/128/709/709861.png" class="icon-img" alt="COST EFFICIENCY">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">COST EFFICIENCY</h5>
+        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+            Ratione perferendis iusto aliquam sunt quis quas debitis, maiores placeat magnam accusantium enim magni sed expedita accusamus, officiis ut architecto temporibus! Architecto.</p>
+            <a href="#" class="btn btn-primary">GET STARTED</a>
+      </div>
+    </div>
+</div>
+<div class="col">
+    <div class="card">
+        <div class="icon-circle">
+      <img src="https://cdn-icons-png.flaticon.com/128/3593/3593337.png" class="icon-img" alt="PAYMENT OPTIONS">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">PAYMENT OPTIONS</h5>
+        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+            Quaerat accusantium consequatur totam cum temporibus voluptatum, culpa eligendi eum voluptatem accusamus reprehenderit facere assumenda qui perferendis neque? Magni laborum velit tempora!.</p>
+            <a href="#" class="btn btn-primary">GET STARTED</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
