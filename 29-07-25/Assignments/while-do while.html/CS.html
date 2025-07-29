@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Table Generator</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        input[type="number"] {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        #output {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Multiplication Table Generator</h1>
+
+    <label for="numberInput">Enter an integer:</label>
+    <input type="number" id="numberInput" value="5">
+
+    <button onclick="generateTable('for')">Generate (for loop)</button>
+    <button onclick="generateTable('while')">Generate (while loop)</button>
+    <button onclick="generateTable('do-while')">Generate (do-while loop)</button>
+
+    <div id="output"></div>
+
+    <script>
+        function generateTable(loopType) {
+            const numberInput = document.getElementById('numberInput');
+            const outputDiv = document.getElementById('output');
+            const num = parseInt(numberInput.value);
+
+            if (isNaN(num)) {
+                outputDiv.innerHTML = "<p style='color: red;'>Please enter a valid integer.</p>";
+                return;
+            }
+
+            let tableContent = `<h2>Multiplication Table of ${num} (${loopType} loop)</h2>`;
+
+            switch (loopType) {
+                case 'for':
+                    for (let i = 1; i <= 10; i++) {
+                        tableContent += `<p>${num} x ${i} = ${num * i}</p>`;
+                    }
+                    break;
+                case 'while':
+                    let j = 1;
+                    while (j <= 10) {
+                        tableContent += `<p>${num} x ${j} = ${num * j}</p>`;
+                        j++;
+                    }
+                    break;
+                case 'do-while':
+                    let k = 1;
+                    do {
+                        tableContent += `<p>${num} x ${k} = ${num * k}</p>`;
+                        k++;
+                    } while (k <= 10);
+                    break;
+                default:
+                    tableContent = "<p style='color: red;'>Invalid loop type selected.</p>";
+            }
+            outputDiv.innerHTML = tableContent;
+        }
+    </script>
+</body>
+</html>
