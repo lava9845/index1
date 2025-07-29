@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+</head>
+<body>
+    <h1>Calculate the basic operations</h1>
+    <script>
+const add = (num1, num2) => num1 + num2;
+const subtract = (num1, num2) => num1 - num2;
+const multiply = (num1, num2) => num1 * num2;
+const divide = (num1, num2) => {
+  if (num2 === 0) {
+    return "Error: Division by zero";
+  }
+  return num1 / num2;
+};
+const calculate = (operation, num1, num2) => {
+  switch (operation) {
+    case '+':
+      return add(num1, num2);
+    case '-':
+      return subtract(num1, num2);
+    case '*':
+      return multiply(num1, num2);
+    case '/':
+      return divide(num1, num2);
+    default:
+      return "Invalid operation";
+  }
+};
+// Example usage:
+console.log(calculate('+', 5, 3));    // Output: 8
+console.log(calculate('-', 10, 4));   // Output: 6
+console.log(calculate('*', 7, 2));    // Output: 14
+console.log(calculate('/', 15, 3));   // Output: 5
+console.log(calculate('/', 8, 0));    // Output: Error: Division by zero
+console.log(calculate('%', 5, 2));    // Output: Invalid operation
+</script>
+</body>
+</html>
