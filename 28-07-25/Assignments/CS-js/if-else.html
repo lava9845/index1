@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Grade Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    input {
+      margin: 5px;
+      padding: 8px;
+      width: 100px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Enter Marks for 5 Subjects:</h2>
+  <input type="number" id="mark1" placeholder="Subject 1" min="0" max="100"><br>
+  <input type="number" id="mark2" placeholder="Subject 2" min="0" max="100"><br>
+  <input type="number" id="mark3" placeholder="Subject 3" min="0" max="100"><br>
+  <input type="number" id="mark4" placeholder="Subject 4" min="0" max="100"><br>
+  <input type="number" id="mark5" placeholder="Subject 5" min="0" max="100"><br>
+
+  <button onclick="calculateGradeIfElse()">Calculate Grade (if-else)</button>
+  <button onclick="calculateGradeSwitch()">Calculate Grade (switch)</button>
+
+  <script>
+    function getTotalMarks() {
+      const marks = [
+        parseInt(document.getElementById('mark1').value) || 0,
+        parseInt(document.getElementById('mark2').value) || 0,
+        parseInt(document.getElementById('mark3').value) || 0,
+        parseInt(document.getElementById('mark4').value) || 0,
+        parseInt(document.getElementById('mark5').value) || 0
+      ];
+      return marks.reduce((sum, mark) => sum + mark, 0);
+    }
+
+    function calculateGradeIfElse() {
+      const total = getTotalMarks();
+      if (total > 450) {
+        alert("You scored grade A—Congratulations.");
+      } else if (total > 300 && total <= 450) {
+        alert("You scored grade B—Good Job.");
+      } else if (total > 250 && total <= 300) {
+        alert("You scored grade C—You can do better.");
+      } else {
+        alert("Need to Work Hard.");
+      }
+    }
+
+    function calculateGradeSwitch() {
+      const total = getTotalMarks();
+      let gradeCategory;
+      if (total > 450) {
+        gradeCategory = 'A';
+      } else if (total > 300 && total <= 450) {
+        gradeCategory = 'B';
+      } else if (total > 250 && total <= 300) {
+        gradeCategory = 'C';
+      } else {
+        gradeCategory = 'D';
+      }
+
+      switch (gradeCategory) {
+        case 'A':
+          alert("You scored grade A—Congratulations.");
+          break;
+        case 'B':
+          alert("You scored grade B—Good Job.");
+          break;
+        case 'C':
+          alert("You scored grade C—You can do better.");
+          break;
+        default:
+          alert("Need to Work Hard.");
+      }
+    }
+  </script>
+</body>
+</html>
