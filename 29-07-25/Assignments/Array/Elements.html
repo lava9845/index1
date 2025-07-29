@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elements of array</title>
+</head>
+<body>
+    <h1>Passing parameter for first element of 'n'</h1>
+    <script>
+        function getFirstElements(arr,n)
+    {
+            if(arr==null)
+        {
+            return undefined;
+        }
+        if(n==null ||typeof n!=='number' || n<0)
+        {
+           return arr[0]; 
+        }
+        return arr.slice(0,n);
+    }
+    const myArray=[10,0,5,3];
+    console.log(getFirstElements(myArray));
+    console.log(getFirstElements(myArray,1));
+    console.log(getFirstElements(myArray,2));// just print output 
+    console.log(getFirstElements(myArray,3));// ..
+</script>
+    
+</body>
+</html>
