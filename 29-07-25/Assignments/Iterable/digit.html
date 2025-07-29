@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iterable of array</title>
+</head>
+<body>
+    <h1>Digits </h1>
+    <script>
+        let digits = [2356, 1212, 8967, 4563, 2345];
+        let sum = digits.reduce((acc, val) => acc + val, 0);
+        let difference = digits.reduce((acc, val) => acc - val);
+        let product = digits.reduce((acc, val) => acc * val, 1);
+        
+         console.log("Sum:", sum);
+         console.log("Subtraction:", difference);
+        console.log("Multiplication:", product);
+   </script>
+    
+</body>
+</html>
