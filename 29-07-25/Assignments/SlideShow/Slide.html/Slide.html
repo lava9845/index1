@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Conditional Slideshow</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+      padding-top: 50px;
+    }
+    .slideshow-container {
+      position: relative;
+      max-width: 600px;
+      margin: auto;
+    }
+    #slide {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    let currentIndex = 0;
+    function nextSlideOnClick() {
+      const slide = document.getElementById('slide');
+      if (currentIndex === 0) {
+        slide.src = 'https://images.pexels.com/photos/45853/grey-crowned-crane-bird-crane-animal-45853.jpeg';
+      } else if (currentIndex === 1) {
+        slide.src = 'https://images.pexels.com/photos/326055/pexels-photo-326055.jpeg';
+      } else if (currentIndex === 2) {
+        slide.src = 'https://images.pexels.com/photos/1133957/pexels-photo-1133957.jpeg';
+      } else if (currentIndex === 3) {
+        slide.src = 'https://images.pexels.com/photos/1308881/pexels-photo-1308881.jpeg';  
+      } else if (currentIndex === 4) {
+        slide.src = 'https://images.pexels.com/photos/906150/pexels-photo-906150.jpeg';  
+      } else {
+        console.log('All five images displayed.');
+        return;  
+      }
+      currentIndex++;
+      console.log('Slide index is now:', currentIndex);
+    }
+  </script>
+</head>
+<body onload="nextSlideOnClick()">
+  <div class="slideshow-container">
+    <img
+      id="slide"
+      src="https://images.pexels.com/photos/45853/grey-crowned-crane-bird-crane-animal-45853.jpeg"
+      alt="Slide"
+      width="600"
+      onclick="nextSlideOnClick()"
+    >
+     <p>Click the image to advance through 5 slides.</p>
+    <script src="script.js"></script>
+  </div>
+</body>
+</html>
+
