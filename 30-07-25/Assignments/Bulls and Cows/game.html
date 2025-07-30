@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulls and Cows</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        #game-container {
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            border:1px solid #ccc;
+        }
+        #output {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        input[type="text"] {
+            width: 100px;
+            padding:5px;
+        }
+        button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+ </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Bulls and Cows</h1>
+        <p>Enter a 4-digit number with unique digits:</p>
+        <input type="text" id="guess-input" maxlength="4">
+        <button onclick="checkGuess()">Guess</button>
+        <div id="output"></div>
+    </div>
+    <script>
+        let secretNumber;
+        let attempts=0;
+        function generateSecretNumber(){
+            const digits=[0,1,2,3,4,5,6,7,8,9];
+            let number="";
+            for(let i=0;i<4;i++) {
+                const randomIndex=Math.floor(Math.random()*digits.length);
+                number +=digits.splice(randomIndex,1)[0];
+            }
+            return number;
+        }
+        function calculateBullsAndCows(guess,secret)
+        {
+            let bulls=0;
+            let cows=0;
+            for(let i=0;i<4;i++) {
+                if(guess[i]===secret[i]) {
+                    bulls++;
+                }else if(secret.includes(guess[i])) {
+                    cows++;
+                }
+            }
+            return{bulls,cows};
+        }
+        function checkGuess() {
+            const guess=document.getElementById("guess-input").value;
+            const outputDiv = document.getElementById("output");
+            attempts++;
+            
+            if (guess.length !== 4 || new Set(guess).size !== 4 || isNaN(parseInt(guess))) {
+                outputDiv.innerHTML = "Invalid guess. Please enter a 4-digit number with unique digits.";
+                return;
+        }
+    
+    const {bulls,cows}=calculateBullsAndCows(guess,secretNumber);
+
+    if(bulls===4) {
+        outputDiv.innerHTML=`Congratulations! You guessed the number ${secretNumber} in ${attempts} attempts.`;
+        document.getElementById("guess-input").disabled=true;
+        document.querySelector("button").disabled=true;
+    }else {
+        outputDiv.innerHTML=`Guess: ${guess}<br>Result:${bulls} bull(s),${cows} cow(s)<br>Attempts:${attempts}`;
+    }
+    document.getElementById("guess-input").value="";
+}
+secretNumber=generateSecretNumber();
+console.log("Secret Number:",secretNumber);
+  </script>   
+</body>
+</html>
