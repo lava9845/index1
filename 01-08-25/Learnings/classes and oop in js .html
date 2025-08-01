@@ -1,0 +1,168 @@
+Javascript classes and oops
+      
+    Object-Oriented Programming (OOP) is a programming paradigm based on the concept of "objects," which can contain data and methods. In JavaScript, despite its prototype-based nature, OOP principles are applied, especially with the introduction of the class keyword in ES6 (ECMAScript 2015).
+
+Key OOP Concepts in JavaScript:
+      Objects: 
+          Fundamental entities that encapsulate data (properties) and behavior (methods). Objects can be created using object literals, constructor functions, or classes. 
+  
+      Ex:
+
+      let person = {
+        name: 'Alice',
+        greet: function() {
+            console.log(`Hello, my name is ${this.name}`);
+        }
+    };
+
+    Classes: 
+        Blueprints for creating objects. Classes define the structure (properties) and behavior (methods) that objects of that class will possess. While syntactically similar to classes in other languages, JavaScript classes are essentially "syntactic sugar" over the existing prototype-based inheritance.
+       
+
+        Ex:
+           
+              class Person {
+            constructor(name) {
+            this.name = name;
+        }
+        greet() {
+            console.log(`Hello, my name is ${this.name}`);
+        }
+    }
+
+
+    Encapsulation:
+          The process of Wrapping properties and functions within a single unit (the object or class).As it lacks built-in access modifiers like private.
+     
+          // Example
+
+class person {
+    constructor(name, id) {
+        this.name = name;
+        this.id = id;
+    }
+    add_Address(add) {
+        this.add = add;
+    }
+    getDetails() {
+        console.log(`Name is ${this.name},
+        Address is: ${this.add}`);
+    }
+}
+
+let person1 = new person('Mukul', 21);
+person1.add_Address('Delhi');
+person1.getDetails();
+
+     Abstraction:
+           The process of  hiding of data or data Abstraction which means representing essential features hiding the background detail.
+           
+           
+           // Abstraction example
+function person(fname, lname) {
+    let firstname = fname;
+    let lastname = lname;
+
+    let getDetails_noaccess = function () {
+        return (`First name is: ${firstname} Last 
+            name is: ${lastname}`);
+    }
+
+    this.getDetails_access = function () {
+        return (`First name is: ${firstname}, Last 
+            name is: ${lastname}`);
+    }
+}
+let person1 = new person('Mukul', 'Latiyan');
+console.log(person1.firstname);
+console.log(person1.getDetails_noaccess);
+console.log(person1.getDetails_access());
+
+
+    Inheritance: 
+
+         It is a concept in which some properties and methods of an Object are being used by another Object.
+         Unlike most of the OOP languages where classes inherit classes, JavaScript Objects inherit Objects i.e. certain features (property and methods) of one object can be reused by other Objects. 
+
+         // Inheritance example
+
+
+         class person {
+    constructor(name) {
+        this.name = name;
+    }
+    // method to return the string
+    toString() {
+        return (`Name of person: ${this.name}`);
+    }
+}
+class student extends person {
+    constructor(name, id) {
+        // super keyword for calling the above 
+        // class constructor
+        super(name);
+        this.id = id;
+    }
+    toString() {
+        return (`${super.toString()},
+        Student ID: ${this.id}`);
+    }
+}
+let student1 = new student('Mukul', 22);
+console.log(student1.toString());
+
+
+
+Polimorphism:
+     
+     Polymorphism is one of the 4 pillars of object-oriented programming languages where poly means many and morphism means transforming one form into another.
+
+
+    Method Overriding(Run-time Polimorphism):
+     A child class overrides a method of its parent class.
+Method Overloading (simulated): A function behaves differently based on the number or type of its arguments.
+ 
+   class Animal {
+    speak() {
+        console.log("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    speak() {
+        console.log("Dog barks");
+    }
+}
+class Cat extends Animal {
+    speak() {
+        console.log("Cat meows");
+    }
+}
+const dog = new Dog();
+dog.speak(); 
+const cat = new Cat();
+cat.speak();
+  
+
+  Method Overloading (Compile-time Polymorphism).
+       
+        JavaScript does not natively support method overloading, where multiple methods with the same name but different arguments exist in the same scope.
+Ex:
+       
+      class Calculator {
+    add(a, b) {
+        if (b === undefined) {
+            return a + a; 
+        }
+        return a + b; 
+    }
+}
+const calc = new Calculator();
+console.log(calc.add(2)); 
+console.log(calc.add(2, 3));
+  
+Benefits:
+       code reucability
+       Easy Integration and Extension,
+       Simplified code maintenance.
+
