@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Substring of objects</title>
+</head>
+<body>
+    <script>
+        function getAllSubstrings(str) {
+  const substrings = [];
+  for (let i = 0; i < str.length; i++) {
+    for (let j = i + 1; j <= str.length; j++) {
+      substrings.push(str.substring(i, j));
+    }
+  }
+  return substrings;
+}
+        //
+    const input = "cake";
+const result = getAllSubstrings(input);
+console.log(result);
+    </script>
+    
+</body>
+</html>

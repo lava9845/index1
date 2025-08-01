@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function invertObject(obj) {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [value, key])
+  );
+}
+
+         var student ={ name: "Jose", department : "Computer Science",year : 3};
+         const inverted=invertObject(student);
+         console.log(inverted);
+             </script>
+    
+</body>
+</html>
