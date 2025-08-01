@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area of a Triangle</title>
+</head>
+<body>
+    <script>
+        class Triangle{
+            constructor()
+            {
+                this.side1=3;
+                this.side2=4;
+                this.side3=5;
+            }
+            calculatePerimeter()
+            {
+                return this.side1+this.side2+this.side3;
+            }
+            calculateArea()
+            {
+                const s=this.calculatePerimeter()/2;
+                return Math.sqrt(s*(s-this.side1)*(s-this.side2)*(s-this.side3));
+            }
+        }
+        const myTriangle=new Triangle();
+        const perimeter=myTriangle.calculatePerimeter();
+        console.log(`Perimeter of the triangle:${perimeter}units`);
+        const area=myTriangle.calculateArea();
+        console.log(`Area of the triangle:${area}square units`);
+    </script>
+    
+</body>
+</html>
