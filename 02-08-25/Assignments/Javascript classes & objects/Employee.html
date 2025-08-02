@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Details</title>
+</head>
+<body>
+    <script>
+        class Employee {
+  constructor(name, yearOfJoining, salary, address) {
+    this.name = name;
+    this.yearOfJoining = yearOfJoining;
+    this.salary = salary; 
+    this.address = address;
+  }
+printDetails() {
+    console.log(`${this.name} ${this.yearOfJoining} ${this.address}`);
+  }
+}
+const employee1 = new Employee("Robert", 1994, 50000, "64C- WallsStreet");
+const employee2 = new Employee("Sam", 2000, 60000, "68D- Wall Street");
+const employee3 = new Employee("John", 1999, 55000, "26B- Wall Street");
+console.log("Name  Year of joining  Address");
+employee1.printDetails();
+employee2.printDetails();
+employee3.printDetails();
+    </script>
+    
+</body>
+</html>

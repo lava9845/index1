@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rectangle</title>
+</head>
+<body>
+    <script>
+        class Rectangle {
+  constructor(length, breadth) {
+    this.length = length;
+    this.breadth = breadth;
+  }
+
+  Area() {
+    return this.length * this.breadth;
+  }
+}
+const rectangle1 = new Rectangle(4, 5);
+const rectangle2 = new Rectangle(5, 8);
+console.log(`Area of the first rectangle: ${rectangle1.Area()}`);
+console.log(`Area of the second rectangle: ${rectangle2.Area()}`);
+    </script>
+    
+</body>
+</html>
