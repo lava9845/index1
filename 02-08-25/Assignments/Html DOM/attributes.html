@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf‑8" />
+    <title>Get Link Attributes</title>
+  </head>
+  <body>
+    <p>
+      <a id="w3r"
+         type="text/html"
+         hreflang="en‑us"
+         rel="nofollow"
+         target="_self"
+         href="https://www.w3resource.com/">
+        w3resource
+      </a>
+    </p>
+
+    <button onclick="getAttributes()">Click here to get attribute values</button>
+
+    <div id="output" style="margin-top:1em; font-family:monospace;"></div>
+    
+    <script>
+      function getAttributes() {
+  const link = document.getElementById("w3r");
+
+  if (!link) {
+    console.error("Could not find the anchor with id‑\"w3r\".");
+    return;
+  }
+  const href     = link.href;              
+  const hreflang = link.hreflang || "";  
+  const rel      = link.rel;              
+  const target   = link.target || "_self"; 
+  const type     = link.type || "";        
+  const rawHref     = link.getAttribute("href") ?? "(not in markup)";
+  const rawHreflang = link.getAttribute("hreflang") ?? "(not in markup)";
+  const rawRel      = link.getAttribute("rel") ?? "(not in markup)";
+  const rawTarget   = link.getAttribute("target") ?? "(not in markup)";
+  const rawType     = link.getAttribute("type") ?? "(not in markup)";
+
+  const out = `
+href (resolved):      ${href}
+hreflang (prop):      ${hreflang}
+rel (prop):           ${rel}
+target (prop):        ${target}
+type (prop):          ${type}
+
+-- raw attribute values from markup --
+href:                 ${rawHref}
+hreflang:             ${rawHreflang}
+rel:                  ${rawRel}
+target:               ${rawTarget}
+type:                 ${rawType}
+  `.trim();
+  document.getElementById("output").textContent = out;
+}
+
+    </script>
+  </body>
+</html>

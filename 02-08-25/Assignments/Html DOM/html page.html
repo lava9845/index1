@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic HTML Page</title>
+</head>
+<body>
+    <script>
+        const mainContainer = document.createElement('div');
+        mainContainer.id = 'main-content';
+        const heading = document.createElement('h1');
+        heading.textContent = 'Welcome to my Dynamic Page!';
+        const paragraph = document.createElement('p');
+        paragraph.textContent = 'This entire page content was generated using pure JavaScript.';
+        const button = document.createElement('button');
+        button.textContent = 'Click Me!';
+        button.addEventListener('click', () => {
+            alert('Button clicked!');
+        });
+        mainContainer.appendChild(heading);
+        mainContainer.appendChild(paragraph);
+        mainContainer.appendChild(button);
+        document.body.appendChild(mainContainer);
+    </script>
+</body>
+</html>
