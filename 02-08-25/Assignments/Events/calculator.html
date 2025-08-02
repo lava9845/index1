@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Innovative JS Calculator</title>
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --fg: #222;
+      --btn: #ddd;
+      --btn‑op: #89c2d9;
+      --btn‑ac: #e63946;
+      --btn‑mem: #a8d5ba;
+      font‑size: 10px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #222;
+        --fg: #f7f7f7;
+        --btn: #444;
+        --btn-op: #186a8e;
+        --btn-ac: #9d0208;
+        --btn-mem: #4d7f52;
+      }
+    }
+    body {
+      margin: 0;
+      font: var(--font-size) sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: var(--bg);
+      color: var(--fg);
+    }
+    .calc {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      background: var(--bg);
+      overflow: hidden;
+      width: 320px;
+      max-width: 100%;
+      user-select: none;
+    }
+    .display {
+      background: var(--btn);
+      padding: 16px;
+      font-size: 1.5em;
+      text-align: right;
+      overflow: auto;
+      min-height: 1.2em;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 8px;
+      padding: 8px;
+    }
+    .buttons button {
+      font-size: 1.1em;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      background: var(--btn);
+      cursor: pointer;
+      color: var(--fg);
+      transition: background 0.2s;
+    }
+    .buttons button:hover {
+      background: #aaa;
+    }
+    .btn-op { background: var(--btn‑op); }
+    .btn-ac { background: var(--btn‑ac); color: white; }
+    .btn-mem { background: var(--btn‑mem); }
+    .history {
+      max-height: 120px;
+      overflow-y: auto;
+      padding: 8px;
+      border-top: 1px solid var(--btn);
+      font-size: 0.9em;
+    }
+    .history li { cursor: pointer; margin-bottom: 4px; }
+    .history li:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="calc">
+    <div id="disp" class="display">0</div>
+    <div class="buttons">
+      <button class="btn-ac" data-action="all-clear">AC</button>
+      <button class="btn-ac" data-action="delete">←</button>
+      <button class="btn-mem" data-mem="recall">MR</button>
+      <button class="btn-mem" data-mem="clear">MC</button>
+
+      <button data-mem="add">M⁺</button>
+      <button data-mem="sub">M⁻</button>
+      <button class="btn-op" data-op="/">÷</button>
+      <button class="btn-op" data-op="*">×</button>
+
+      <button data-num="7">7</button>
+      <button data-num="8">8</button>
+      <button data-num="9">9</button>
+      <button class="btn-op" data-op="-">−</button>
+
+      <button data-num="4">4</button>
+      <button data-num="5">5</button>
+      <button data-num="6">6</button>
+      <button class="btn-op" data-op="+">+</button>
+
+      <button data-num="1">1</button>
+      <button data-num="2">2</button>
+      <button data-num="3">3</button>
+      <button class="btn-op" data-op="^">^</button>
+
+      <button data-num="0" style="grid-column: span 2;">0</button>
+      <button data-dot=".">.</button>
+      <button data-eq>=</button>
+    </div>
+    <ul id="hist" class="history"></ul>
+  </div>
+
+  <script>
+    const disp = document.getElementById('disp');
+    const histUL = document.getElementById('hist');
+    let cur = '';
+    let mem = 0;
+    let hist = JSON.parse(localStorage.getItem('calcHist') || '[]');
+
+    function updateDisplay() {
+      disp.textContent = cur || '0';
+    }
+
+    function pushHistory(expr, result) {
+      hist.unshift(expr + ' = ' + result);
+      if (hist.length > 10) hist.pop();
+      localStorage.setItem('calcHist', JSON.stringify(hist));
+      renderHistory();
+    }
+
+    function renderHistory() {
+      histUL.innerHTML = '';
+      hist.forEach((line,i) => {
+        const li = document.createElement('li');
+        li.textContent = line;
+        li.onclick = () => {
+          cur = line.split(' = ')[0];
+          updateDisplay();
+        };
+        histUL.appendChild(li);
+      });
+    }
+
+    function allClear() {
+      cur = '';
+      updateDisplay();
+    }
+    function doDelete() {
+      cur = cur.slice(0, -1);
+      updateDisplay();
+    }
+
+    function doCompute() {
+      if (!cur) return;
+      let expr = cur.replace(/×/g, '*').replace(/÷/g, '/');
+      let res;
+      try {
+        // Use safe eval-hardcoded parsing below if needed
+        res = Function('"use strict";return (' + expr + ')')();
+        if (typeof res !== 'number' || !isFinite(res)) throw new Error;
+      } catch {
+        res = 'Error';
+      }
+      pushHistory(cur, res);
+      cur = res.toString();
+      updateDisplay();
+    }
+
+    function appendNum(d) {
+      if (d === '.' && cur.includes('.')) return;
+      cur += d;
+      updateDisplay();
+    }
+
+    function appendOp(op) {
+      if (!cur) return;
+      if (/[+\-*/^]$/.test(cur)) {
+        cur = cur.slice(0, -1) + op;
+      } else {
+        cur += op;
+      }
+      updateDisplay();
+    }
+
+    function handleMem(action) {
+      const cv = parseFloat(cur) || 0;
+      switch (action) {
+        case 'add': mem += cv; break;
+        case 'sub': mem -= cv; break;
+        case 'recall': cur = mem.toString(); updateDisplay(); break;
+        case 'clear': mem = 0; break;
+      }
+    }
+
+    document.querySelectorAll('button').forEach(btn => {
+      btn.onclick = () => {
+        if (btn.hasAttribute('data-num')) appendNum(btn.getAttribute('data-num'));
+        else if (btn.hasAttribute('data-dot')) appendNum('.');
+        else if (btn.hasAttribute('data-op')) appendOp(btn.getAttribute('data-op'));
+        else if (btn.hasAttribute('data-action')) {
+          const a = btn.getAttribute('data-action');
+          if (a === 'all-clear') allClear();
+          else if (a === 'delete') doDelete();
+        }
+        else if (btn.hasAttribute('data-eq')) doCompute();
+        else if (btn.hasAttribute('data-mem')) handleMem(btn.getAttribute('data-mem'));
+      };
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key >= '0' && e.key <= '9') { appendNum(e.key) }
+      else if (e.key === '.') appendNum('.');
+      else if (['+','-','*','/','^'].includes(e.key)) appendOp(e.key);
+      else if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); doCompute(); }
+      else if (e.key === 'Backspace') doDelete();
+      else if (e.key === 'Escape') allClear();
+    });
+
+    renderHistory();
+    updateDisplay();
+  </script>
+</body>
+</html>
