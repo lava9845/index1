@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using fetching and promises of HttpRequest</title>
+    <script>
+const API_URL = 'https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json'; 
+fetch(API_URL)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log("Fetched Data:");
+    if (Array.isArray(data)) {
+      data.forEach((item, index) => {
+        console.log(`Item ${index + 1}:`);
+        for (const key in item) {
+          console.log(`  ${key}: ${item[key]}`);
+        }
+      });
+    } else if (typeof data === 'object' && data !== null) {
+      for (const key in data) {
+        console.log(`  ${key}: ${data[key]}`);
+      }
+    } else {
+      console.log(data); 
+    }
+  })
+  .catch(error => {
+    console.error("Error fetching data:", error);
+  });
+    </script>
+</head>
+<body>
+    <h1>
+     Fetching the Data
+    </h1>
+</body>
+</html>

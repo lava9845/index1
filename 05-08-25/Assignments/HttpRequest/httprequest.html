@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>XHR Http Request</title>
+      <script>
+      const url = 'https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json'; 
+
+const xhr = new XMLHttpRequest();
+xhr.open('GET', url, true); 
+xhr.responseType = 'json'; 
+xhr.onload = function() {
+  if (xhr.status === 200) {
+    const jsonData = xhr.response;
+    const prettyPrintedJson = JSON.stringify(jsonData, null, 2);
+    console.log(prettyPrintedJson);
+  } else {
+    console.error(`Error: ${xhr.status} - ${xhr.statusText}`);
+  }
+};
+xhr.onerror = function() {
+  console.error('Network error occurred.');
+};
+xhr.send();
+</script>
+</head>
+<body>
+  <h1>Open Http Request output</h1>
+</body>
+</html>
