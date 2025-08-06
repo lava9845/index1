@@ -1,0 +1,22 @@
+body { 
+    font-family: Arial, sans-serif; 
+    text-align: center; 
+    background: #f0f0f0; 
+  }
+#notes-container { 
+  display: grid; 
+  gap: 10px; 
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+  padding: 20px; 
+}
+.note { 
+  background: #ffeb3b; 
+  padding: 15px; 
+  border-radius: 8px; 
+  position: relative; 
+}
+.note button.delete { 
+  position: absolute; 
+  top: 5px; 
+  right: 5px; 
+}
