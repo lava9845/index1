@@ -1,4 +1,4 @@
- import { getNotes, saveNotes } from './storage.js';
+import { getNotes, saveNotes } from './storage.js';
 import { renderNotes } from './note.js';
 
 const addBtn = document.getElementById('add-note');
