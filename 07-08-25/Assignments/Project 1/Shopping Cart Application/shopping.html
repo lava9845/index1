@@ -12,14 +12,24 @@
     <h2>Clothing Store</h2>
     <div class="nav-actions">
         <input type="text" id="searchInput" placeholder="Search items..." onkeyup="searchItems()">
-        <button id="loginBtn" onclick="loginuser">Login</button>
-      <a id="adminPageLink" href="admin.html" style="display:none;">Admin Page</a>
+        <button id="loginBtn">Login</button>
+        <a id="adminPageLink" href="admin.html" style="display:none;">Admin Page</a>
       <div class="cart">
         <i class="bi bi-cart2"></i>
         <div class="cartAmount">0</div>
     </div>
     </div>
    </div>
+   <div id="loginPopup" class="login-popup">
+  <div class="login-box">
+    <h3>Login</h3>
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button id="loginSubmit">Login</button>
+    <button id="loginCancel" class="cancel-btn">Cancel</button>
+  </div>
+</div>
+
     
    <div class="shop" id="shop">
      <div class="item">

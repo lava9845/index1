@@ -1,69 +1,96 @@
-// Redirect if not logged in as admin
-if (localStorage.getItem("role") !== "admin") {
-    alert("Access Denied! Only admins can view this page.");
+import { auth, db } from './firebase.js';
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // ================== ADMIN AUTH CHECK ==================
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
     window.location.href = "index.html";
-}
+    return;
+  }
 
-// Load existing products
-let shopItemsData = JSON.parse(localStorage.getItem("shopItemsData")) || [];
-
-// Render products in table
-function renderTable() {
-    const tableBody = document.querySelector("#productTable tbody");
-    tableBody.innerHTML = shopItemsData.map((item, index) => `
-        <tr>
-            <td>${item.name}</td>
-            <td>$${item.price}</td>
-            <td>${item.desc}</td>
-            <td><img src="${item.img}" width="50"></td>
-            <td>
-                <button onclick="editProduct(${index})">Edit</button>
-                <button onclick="deleteProduct(${index})">Delete</button>
-            </td>
-        </tr>
-    `).join("");
-}
-renderTable();
-
-// Add new product
-document.getElementById("productForm").addEventListener("submit", (e) => {
-    e.preventDefault();
-    let newProduct = {
-        id: Date.now().toString(),
-        name: document.getElementById("prodName").value,
-        price: Number(document.getElementById("prodPrice").value),
-        desc: document.getElementById("prodDesc").value,
-        img: document.getElementById("prodImg").value
-    };
-    shopItemsData.push(newProduct);
-    localStorage.setItem("shopItemsData", JSON.stringify(shopItemsData));
-    renderTable();
-    e.target.reset();
+  const userDoc = await getDoc(doc(db, "users", user.uid));
+  if (!userDoc.exists() || userDoc.data().role !== "admin") {
+    alert("Access denied");
+    window.location.href = "index.html";
+  } else {
+    loadProducts();
+    loadOrders();
+  }
 });
 
-// Edit product
-function editProduct(index) {
-    let product = shopItemsData[index];
-    let name = prompt("Enter new name", product.name);
-    let price = prompt("Enter new price", product.price);
-    let desc = prompt("Enter new description", product.desc);
-    let img = prompt("Enter new image URL", product.img);
-    shopItemsData[index] = { ...product, name, price, desc, img };
-    localStorage.setItem("shopItemsData", JSON.stringify(shopItemsData));
-    renderTable();
+// ================== ADD PRODUCT ==================
+document.getElementById("addItemForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("itemName").value.trim();
+  const price = parseFloat(document.getElementById("itemPrice").value);
+  const image = document.getElementById("itemImage").value.trim();
+
+  if (!name || !price || !image) {
+    alert("All fields are required!");
+    return;
+  }
+
+  await addDoc(collection(db, "products"), { name, price, image });
+  alert("Product added successfully!");
+  e.target.reset();
+  loadProducts();
+});
+
+// ================== LOAD PRODUCTS ==================
+async function loadProducts() {
+  const querySnapshot = await getDocs(collection(db, "products"));
+  const productList = document.getElementById("productList");
+  productList.innerHTML = "";
+
+  querySnapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    productList.innerHTML += `
+      <div style="display:flex;align-items:center;margin-bottom:10px;gap:10px;">
+        <img src="${data.image}" width="60" height="60" style="object-fit:cover;">
+        <strong>${data.name}</strong> - $${data.price}
+        <button onclick="deleteProduct('${docSnap.id}')">Delete</button>
+      </div>
+    `;
+  });
 }
 
-// Delete product
-function deleteProduct(index) {
-    if (confirm("Are you sure?")) {
-        shopItemsData.splice(index, 1);
-        localStorage.setItem("shopItemsData", JSON.stringify(shopItemsData));
-        renderTable();
-    }
+// ================== DELETE PRODUCT ==================
+window.deleteProduct = async function(id) {
+  await deleteDoc(doc(db, "products", id));
+  loadProducts();
+};
+
+// ================== LOAD ORDERS ==================
+async function loadOrders() {
+  const querySnapshot = await getDocs(collection(db, "orders"));
+  const orderList = document.getElementById("orderList");
+  orderList.innerHTML = "";
+
+  querySnapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    orderList.innerHTML += `
+      <div style="border:1px solid #ccc;padding:10px;margin-bottom:10px;">
+        <strong>User:</strong> ${data.userEmail}<br>
+        <strong>Items:</strong> ${data.items.map(i => `${i.name} (x${i.quantity})`).join(", ")}
+      </div>
+    `;
+  });
 }
 
-// Logout
-function logoutAdmin() {
-    localStorage.removeItem("role");
+// ================== LOGOUT ==================
+window.logoutUser = function() {
+  signOut(auth).then(() => {
     window.location.href = "index.html";
-}
+  });
+};

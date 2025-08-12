@@ -1,40 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-    <h1>Admin Panel - Product Management</h1>
-    <button onclick="logoutAdmin()">Logout</button>
+  <div class="navbar">
+    <h2>Admin Dashboard</h2>
+    <button onclick="logoutUser()">Logout</button>
+  </div>
 
-    <!-- Add New Product Form -->
-    <h2>Add New Product</h2>
-    <form id="productForm">
-        <input type="text" id="prodName" placeholder="Product Name" required>
-        <input type="number" id="prodPrice" placeholder="Price" required>
-        <input type="text" id="prodDesc" placeholder="Description" required>
-        <input type="text" id="prodImg" placeholder="Image URL" required>
-        <button type="submit">Add Product</button>
+  <div style="padding:20px;">
+    <h3>Add New Product</h3>
+    <form id="addItemForm" style="margin-bottom:20px;">
+      <input type="text" id="itemName" placeholder="Item name" required>
+      <input type="number" id="itemPrice" placeholder="Price" required>
+      <input type="text" id="itemImage" placeholder="Image URL" required>
+      <button type="submit">Add Item</button>
     </form>
 
-    <!-- Product List -->
-    <h2>Product List</h2>
-    <table border="1" id="productTable">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    <h3>Product List</h3>
+    <div id="productList"></div>
 
-    <script src="admin.js"></script>
+    <h3 style="margin-top:20px;">All Orders</h3>
+    <div id="orderList"></div>
+  </div>
+
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="admin.js"></script>
 </body>
 </html>

@@ -1,0 +1,92 @@
+ /* Admin page container */
+.admin-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Section titles */
+.admin-container h3 {
+  margin: 15px 0 10px;
+  color: #333;
+  font-size: 20px;
+  border-bottom: 2px solid #f39c12;
+  padding-bottom: 5px;
+}
+
+/* Add item form */
+#addItemForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+#addItemForm input {
+  flex: 1;
+  min-width: 150px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#addItemForm button {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#addItemForm button:hover {
+  background: #219150;
+}
+
+/* Product list */
+#productList div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+#productList img {
+  border-radius: 5px;
+}
+
+#productList button {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#productList button:hover {
+  background: #c0392b;
+}
+
+/* Orders list */
+#orderList div {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#orderList strong {
+  color: #333;
+}
+
+@media (max-width: 600px) {
+  #addItemForm {
+    flex-direction: column;
+  }
+}

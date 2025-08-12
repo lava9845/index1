@@ -1,175 +1,162 @@
-let shop=document.getElementById('shop');
-let shopItemsData=[{
-    id:"123",
-    name:"Casual Top",
-    price:150,
-    desc:"Lorem ipsum dolor sit amet consectetur.",
-    img:"images/img1.jpg"
-    },
-    {
-    id:"234",
-    name:"Cotton Top",
-    price:200,
-    desc:"Lorem ipsum dolor sit amet consectetur.",
-    img:"images/img2.jpg"
-    },
-    {
-    id:"345",
-    name:"Office Top",
-    price:280,
-    desc:"Lorem ipsum dolor sit amet consectetur.",
-    img:"images/img3.jpg"   
-    },
-    {
-    id:"456",
-    name:"T-shirt",
-    price:120,
-    desc:"Lorem ipsum dolor sit amet consectetur.",
-    img:"images/img4.jpg"      
-    },
-];
-let basket = JSON.parse(localStorage.getItem("basket")) || [];
-let generateShop=()=>{
-    return (shop.innerHTML=shopItemsData.map((x)=>{
-        let{id,name,price,desc,img}=x;
-        return `
-           <div id=product-id-${id} class="item">
-        <img width="218" src=${img} alt="">
-        <div class="details">
-            <h3>${name}</h3>
-            <p>${desc}</p>
-            <div class="price-quantity"></div>
-            <h2>$ ${price}</h2>
-            <div class="button">
-                <i onclick="decrement()" class="bi bi-dash-lg"></i>
-                 <div id=${id} class="quantity">0</div>
-                 <i onclick="increment()" class="bi bi-plus-lg"></i>
-            </div>
-        </div>
-    </div>
-    `})
-.join(""));
-}
-generateShop();
-document.getElementById("orderBtn").addEventListener("click", placeOrder);
+import { auth, db } from "./firebase.js";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  getDoc,
+  doc,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-async function placeOrder() {
-  let user = firebase.auth().currentUser;
+// DOM elements
+const loginPopup = document.getElementById("loginPopup");
+const loginBtn = document.getElementById("loginBtn");
+const loginSubmit = document.getElementById("loginSubmit");
+const loginCancel = document.getElementById("loginCancel");
+const searchInput = document.getElementById("searchInput");
+const adminLink = document.getElementById("adminPageLink");
+const cartAmount = document.querySelector(".cartAmount");
+const orderBtn = document.getElementById("orderBtn");
+
+let cart = [];
+
+// ================== LOGIN FUNCTION ==================
+loginBtn.addEventListener("click", () => {
+  loginPopup.style.display = "block";
+});
+
+// Close login popup
+loginCancel.addEventListener("click", () => {
+  loginPopup.style.display = "none";
+});
+
+// Login submit
+loginSubmit.addEventListener("click", async () => {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("Login successful!");
+    loginPopup.style.display = "none";
+  } catch (error) {
+    alert("Login failed: " + error.message);
+  }
+});
+
+// Auth state check
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    if (userDoc.exists() && userDoc.data().role === "admin") {
+      adminLink.style.display = "inline-block";
+    }
+    loginBtn.textContent = "Logout";
+    loginBtn.onclick = logoutUser;
+  } else {
+    adminLink.style.display = "none";
+    loginBtn.textContent = "Login";
+    loginBtn.onclick = () => loginPopup.style.display = "block";
+  }
+});
+
+function logoutUser() {
+  signOut(auth).then(() => {
+    alert("Logged out");
+  });
+}
+
+  // Check role in Firestore
+  const userDoc = await getDoc(doc(db, "users", user.uid));
+  if (userDoc.exists() && userDoc.data().role === "admin") {
+    adminLink.style.display = "inline-block";
+  } else {
+    adminLink.style.display = "none";
+  }
+
+
+// ================== SEARCH FUNCTION ==================
+window.searchItems = function () {
+  const filter = searchInput.value.toLowerCase();
+  const items = document.querySelectorAll(".shop .item");
+  items.forEach((item) => {
+    const name = item.querySelector("h3").textContent.toLowerCase();
+    item.style.display = name.includes(filter) ? "block" : "none";
+  });
+};
+
+// ================== CART FUNCTIONALITY ==================
+document.querySelectorAll(".bi-plus-lg").forEach((btn, index) => {
+  btn.addEventListener("click", () => {
+    cart[index] = (cart[index] || 0) + 1;
+    updateCartUI();
+  });
+});
+
+document.querySelectorAll(".bi-dash-lg").forEach((btn, index) => {
+  btn.addEventListener("click", () => {
+    if (cart[index] > 0) {
+      cart[index]--;
+    }
+    updateCartUI();
+  });
+});
+
+function updateCartUI() {
+  const quantities = document.querySelectorAll(".quantity");
+  let total = 0;
+  cart.forEach((qty, i) => {
+    quantities[i].textContent = qty || 0;
+    total += qty || 0;
+  });
+  cartAmount.textContent = total;
+}
+
+// ================== PLACE ORDER ==================
+orderBtn.addEventListener("click", async () => {
+  const user = auth.currentUser;
   if (!user) {
-    window.location.href = "signup.html"; // redirect if not logged in
+    alert("Please log in to place an order.");
     return;
   }
 
-  if (basket.length === 0) {
+  const items = [];
+  document.querySelectorAll(".item").forEach((item, index) => {
+    const qty = cart[index] || 0;
+    if (qty > 0) {
+      items.push({
+        name: item.querySelector("h3").textContent,
+        price: parseFloat(item.querySelector("h2").textContent.replace("$", "")),
+        quantity: qty
+      });
+    }
+  });
+
+  if (items.length === 0) {
     alert("Your cart is empty!");
     return;
   }
 
-  let order = {
-    userId: user.uid,
-    items: basket,
-    date: new Date(),
-    status: "Pending"
-  };
-
   try {
-    await db.collection("orders").add(order);
+    await addDoc(collection(db, "orders"), {
+      userEmail: user.email,
+      items,
+      timestamp: new Date()
+    });
     alert("Order placed successfully!");
-    basket = [];
-    localStorage.setItem("data", JSON.stringify(basket));
-    generateCartItems(); // refresh cart UI
+    cart = [];
+    updateCartUI();
   } catch (error) {
-    console.error("Error placing order:", error);
+    alert("Error placing order: " + error.message);
   }
-}
-let increment = (id) => {
-  let search = basket.find((x) => x.id === id);
+});
 
-  if (search === undefined) {
-    basket.push({ id: id, item: 1 });
-  } else {
-    search.item += 1;
-  }
-
-  update(id);
-  localStorage.setItem("basket", JSON.stringify(basket));
+// ================== LOGOUT (OPTIONAL) ==================
+window.logoutUser = function () {
+  signOut(auth).then(() => {
+    alert("Logged out");
+  });
 };
-let decrement = (id) => {
-  let search = basket.find((x) => x.id === id);
-
-  if (search === undefined || search.item === 0) return;
-  else {
-    search.item -= 1;
-  }
-
-  update(id);
-  localStorage.setItem("basket", JSON.stringify(basket));
-};
-let update = (id) => {
-  let search = basket.find((x) => x.id === id);
-  let quantityEl = document.getElementById(id);
-  if (quantityEl) {
-    quantityEl.innerHTML = search.item;
-  }
-};
-let isLoggedIn = false;
-const adminEmail = "admin@store.com";
-const adminUser = "admin";
-function loginUser() {
-    if (!isLoggedIn) {
-        let username = prompt("Enter your username:");
-    if (!username) return;
-        let email = prompt("Enter your email:");
-        if (!email || !validateEmail(email)) {
-            alert("Please enter a valid email address.");
-            return;
-        }
-
-        isLoggedIn = true;
-        document.getElementById("loginBtn").innerText = "Logout";
-        alert(`Welcome, ${username}! Your email: ${email}`);
-         if (username.toLowerCase() === adminUser && email.toLowerCase() === adminEmail) {
-            document.getElementById("adminPageLink").style.display = "inline-block";
-            localStorage.setItem("role", "admin");
-        } else {
-            localStorage.setItem("role", "user");
-        }
-    } else {
-        isLoggedIn = false;
-        document.getElementById("loginBtn").innerText = "Login";
-        document.getElementById("adminPageLink").style.display = "none";
-        localStorage.removeItem("role");
-        alert("You have been logged out.");
-    }
-}
-function validateEmail(email) {
-    let pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return pattern.test(email);
-}
-
-function searchItems() {
-    let query = document.getElementById("searchInput").value.toLowerCase();
-    let filteredData = shopItemsData.filter(item =>
-        item.name.toLowerCase().includes(query)
-    );
-    shop.innerHTML = filteredData.map((x) => {
-        let { id, name, price, desc, img } = x;
-        let search = basket.find((item) => item.id === id) || { item: 0 };
-        return `
-        <div id=product-id-${id} class="item">
-            <img width="218" src=${img} alt="">
-            <div class="details">
-                <h3>${name}</h3>
-                <p>${desc}</p>
-                <h2>$ ${price}</h2>
-                <div class="button">
-                    <i onclick="decrement('${id}')" class="bi bi-dash-lg"></i>
-                    <div id=${id} class="quantity">${search.item}</div>
-                    <i onclick="increment('${id}')" class="bi bi-plus-lg"></i>
-                </div>
-            </div>
-        </div>
-        `;
-    }).join("");
-}
-

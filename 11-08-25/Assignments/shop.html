@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Shopping Cart</title>
+<style>
+:root { 
+    --accent: #6C5CE7; 
+    --bg: #f5f7fb; 
+    --card: #fff; 
+}
+body { 
+    font-family: Arial, sans-serif; 
+    margin: 0; 
+    background: var(--bg); 
+}
+header { 
+    background: var(--accent); 
+    color: #fff; 
+    padding: 10px 16px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    position: sticky; 
+    top: 0; 
+    z-index: 1000;}
+header button { 
+    background: rgba(255,255,255,0.2); 
+    border: none; 
+    padding: 8px 12px; 
+    border-radius: 6px; 
+    color: #fff; 
+    cursor: pointer; }
+.container { 
+    max-width: 900px; 
+    margin: auto; 
+    padding: 16px; }
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); 
+    gap: 16px; 
+}
+.card { 
+    background: var(--card); 
+    padding: 10px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    display: flex; 
+    flex-direction: column; 
+}
+.card img { 
+    width: 100%; 
+    height: 140px; 
+    object-fit: cover; 
+    border-radius: 6px; 
+}
+.card h4 { 
+    margin: 8px 0 4px; 
+}
+.card .price { 
+    font-weight: bold; 
+    margin: 4px 0; 
+}
+.card button { 
+    padding: 6px 10px; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    background: var(--accent); 
+    color: #fff; }
+#adminPanel { 
+    display: none; 
+    background: #fff; 
+    padding: 10px; 
+    border-radius: 8px; 
+    margin-bottom: 20px; 
+}
+input, textarea { 
+    padding: 6px; 
+    width: 100%; 
+    margin-bottom: 8px; 
+    border-radius: 6px; 
+    border: 1px solid #ccc; }
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 10px; }
+th, td { 
+    border: 1px solid #ddd; 
+    padding: 6px; 
+    text-align: left; 
+}
+.cart-modal { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.5); 
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+}
+.cart-content { 
+    background: #fff; 
+    padding: 20px; 
+    border-radius: 8px; 
+    width: 90%; 
+    max-width: 400px; }
+.cart-item { 
+    display: flex; 
+    justify-content: space-between; 
+    margin-bottom: 10px; }
+.qty-btn { 
+    padding: 4px 8px; 
+    border: none; 
+    background: var(--accent); 
+    color: #fff; 
+    border-radius: 4px; 
+    cursor: pointer; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>🛒 Local Shop</div>
+  <div>
+    <button onclick="toggleAdmin()">Admin</button>
+    <button onclick="showCart()">Cart (<span id="cartCount">0</span>)</button>
+  </div>
+</header>
+
+<div class="container">
+  <input type="text" id="searchBox" placeholder="Search items..." oninput="renderItems()">
+  
+  <div id="adminPanel">
+    <h3>Admin Panel</h3>
+    <input id="itemName" placeholder="Item name">
+    <input id="itemPrice" type="number" placeholder="Price">
+    <input id="itemImage" placeholder="Image URL">
+    <button onclick="saveItem()">Save Item</button>
+    <table>
+      <thead><tr><th>Name</th><th>Price</th><th>Actions</th></tr></thead>
+      <tbody id="adminTable"></tbody>
+    </table>
+    <h4>Orders</h4>
+    <div id="ordersList"></div>
+  </div>
+
+  <div id="itemsGrid" class="grid"></div>
+</div>
+
+<!-- Cart Modal -->
+<div class="cart-modal" id="cartModal">
+  <div class="cart-content">
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <div><strong>Total:</strong> ₹<span id="cartTotal">0</span></div>
+    <button onclick="placeOrder()">Place Order</button>
+    <button onclick="closeCart()">Close</button>
+  </div>
+</div>
+
+<script>
+let items = JSON.parse(localStorage.getItem('items') || '[]');
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+let isAdmin = false;
+let editIndex = null;
+
+function saveData() {
+  localStorage.setItem('items', JSON.stringify(items));
+  localStorage.setItem('cart', JSON.stringify(cart));
+  localStorage.setItem('orders', JSON.stringify(orders));
+}
+
+function toggleAdmin() {
+  if (!isAdmin) {
+    let pass = prompt("Enter admin password:");
+    if (pass === "admin123") { isAdmin = true; document.getElementById('adminPanel').style.display = 'block'; renderAdminTable(); renderOrders(); }
+    else alert("Wrong password");
+  } else {
+    isAdmin = false; document.getElementById('adminPanel').style.display = 'none';
+  }
+}
+
+function saveItem() {
+  let name = document.getElementById('itemName').value.trim();
+  let price = parseFloat(document.getElementById('itemPrice').value);
+  let img = document.getElementById('itemImage').value.trim() || "https://via.placeholder.com/150";
+  if (!name || !price) return alert("Fill all fields");
+  if (editIndex !== null) { items[editIndex] = {name, price, img}; editIndex = null; }
+  else items.push({name, price, img});
+  saveData(); renderItems(); renderAdminTable();
+}
+
+function editItem(i) {
+  let item = items[i];
+  document.getElementById('itemName').value = item.name;
+  document.getElementById('itemPrice').value = item.price;
+  document.getElementById('itemImage').value = item.img;
+  editIndex = i;
+}
+
+function deleteItem(i) {
+  if (confirm("Delete item?")) { items.splice(i,1); saveData(); renderItems(); renderAdminTable(); }
+}
+
+function renderAdminTable() {
+  let html = "";
+  items.forEach((it,i)=>{
+    html += `<tr><td>${it.name}</td><td>₹${it.price}</td>
+             <td><button onclick="editItem(${i})">Edit</button>
+                 <button onclick="deleteItem(${i})">Delete</button></td></tr>`;
+  });
+  document.getElementById('adminTable').innerHTML = html;
+}
+
+function renderItems() {
+  let search = document.getElementById('searchBox').value.toLowerCase();
+  let html = "";
+  items.filter(it=>it.name.toLowerCase().includes(search)).forEach((it,i)=>{
+    html += `<div class="card">
+               <img src="${it.img}">
+               <h4>${it.name}</h4>
+               <div class="price">₹${it.price}</div>
+               <button onclick="addToCart(${i})">Add to Cart</button>
+             </div>`;
+  });
+  document.getElementById('itemsGrid').innerHTML = html;
+}
+
+function addToCart(i) {
+  let item = items[i];
+  let existing = cart.find(c=>c.name===item.name);
+  if (existing) existing.qty++;
+  else cart.push({...item, qty: 1});
+  saveData(); updateCartCount();
+}
+
+function updateCartCount() {
+  document.getElementById('cartCount').innerText = cart.reduce((a,c)=>a+c.qty,0);
+}
+
+function showCart() {
+  document.getElementById('cartModal').style.display = 'flex';
+  renderCart();
+}
+
+function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
+
+function renderCart() {
+  let html = "";
+  let total = 0;
+  cart.forEach((c,i)=>{
+    total += c.price * c.qty;
+    html += `<div class="cart-item">
+               <span>${c.name} - ₹${c.price} x ${c.qty}</span>
+               <span>
+                 <button class="qty-btn" onclick="changeQty(${i},-1)">–</button>
+                 <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+               </span>
+             </div>`;
+  });
+  document.getElementById('cartItems').innerHTML = html || "<p>Cart is empty</p>";
+  document.getElementById('cartTotal').innerText = total;
+}
+
+function changeQty(i, delta) {
+  cart[i].qty += delta;
+  if (cart[i].qty <= 0) cart.splice(i,1);
+  saveData(); renderCart(); updateCartCount();
+}
+
+function placeOrder() {
+  if (!cart.length) return alert("Cart is empty");
+  orders.push({date: new Date().toLocaleString(), items: cart});
+  cart = [];
+  saveData();
+  updateCartCount();
+  renderCart();
+  alert("Order placed!");
+  if (isAdmin) renderOrders();
+}
+
+function renderOrders() {
+  let html = "";
+  orders.forEach(o=>{
+    html += `<div><strong>${o.date}</strong><ul>`;
+    o.items.forEach(it=>{ html += `<li>${it.name} x ${it.qty}</li>`; });
+    html += "</ul></div>";
+  });
+  document.getElementById('ordersList').innerHTML = html || "<p>No orders yet</p>";
+}
+
+renderItems();
+updateCartCount();
+</script>
+
+</body>
+</html>
