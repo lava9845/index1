@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Local Shop</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div>🛠 Admin Panel</div>
+  <div>
+    <button onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<div class="container">
+  <h3>Manage Items</h3>
+  <input id="itemName" placeholder="Item name">
+  <input id="itemPrice" type="number" placeholder="Price">
+  <input id="itemImage" placeholder="Image URL">
+  <button onclick="saveItem()">Save Item</button>
+  <table>
+    <thead><tr><th>Name</th><th>Price</th><th>Actions</th></tr></thead>
+    <tbody id="adminTable"></tbody>
+  </table>
+
+  <h3>Orders</h3>
+  <div id="ordersList"></div>
+</div>
+
+<script src="admin.js"></script>
+</body>
+</html>
+
