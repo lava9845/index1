@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vanilla Node File Manager</title>
+</head>
+<body>
+  <h1>File Manager</h1>
+  
+  <input id="filePath" type="text" placeholder="Enter file path (e.g., notes.txt)" style="width:60%">
+  <button id="loadBtn">Load File</button>
+  <button id="createBtn">Create File</button>
+  <button id="deleteBtn">Delete File</button>
+  
+  <pre id="fileContents" 
+  style="border:1px solid #ccc; 
+  padding:10px;overflow:auto;"></pre>
+  <textarea id="appendText" style="width:60%; height:100px;" placeholder="Text to append..."></textarea><br>
+  <button id="appendBtn">Append to File</button>
+ <script>
+    function api(path, opts) {
+      return fetch(path, opts)
+        .then(res => res.text().then(txt => res.ok ? txt : Promise.reject(txt)));
+    }
+
+    document.getElementById('loadBtn').onclick = () => {
+      const p = document.getElementById('filePath').value;
+      api(`/read?path=${encodeURIComponent(p)}`)
+        .then(txt => document.getElementById('fileContents').textContent = txt)
+        .catch(err => alert(err));
+    };
+
+    document.getElementById('appendBtn').onclick = () => {
+      const p = document.getElementById('filePath').value;
+      const t = document.getElementById('appendText').value;
+      api('/append', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: p, text: t })
+      }).then(alert).catch(alert);
+    };
+
+    document.getElementById('deleteBtn').onclick = () => {
+      const f = prompt('Enter file name to delete:');
+      if (!f) return;
+      api('/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: f })
+      }).then(alert).catch(alert);
+    };
+
+    document.getElementById('createBtn').onclick = () => {
+      const f = prompt('Enter new file name (with extension):');
+      if (!f) return;
+      api('/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: f })
+      }).then(alert).catch(alert);
+    };
+  </script>
+</body>
+</html>
